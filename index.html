@@ -1,12 +1,248 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kenai Tech</title>
+  <meta name="description" content="Kenai Tech – smarta AI-verktyg för röst, text och recensioner." />
+
+  <style>
+    :root{
+      --bg: #0b1020;
+      --bg-soft:#0f1630;
+      --text:#e8ecf1;
+      --muted:#aab6c9;
+      --brand:#7c5cff;
+      --brand-2:#0ff0b3;
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fc; --bg-soft:#ffffff; --text:#12141a; --muted:#51607a;
+        --card:#ffffff; --border:rgba(10,10,20,.08); --shadow: 0 10px 30px rgba(10,10,20,.08);
+      }
+      body::before{opacity:.4}
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 100% 0%, rgba(15,240,179,.18), transparent 55%),
+                  var(--bg);
+      line-height:1.55;
+    }
+    /* Subtle grid glow */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(124,92,255,.25), transparent 60%),
+        linear-gradient(transparent 24px, rgba(255,255,255,.06) 25px, rgba(255,255,255,.06) 26px, transparent 27px) 0 0/100% 26px;
+      pointer-events:none; opacity:.18; z-index:0;
+    }
+
+    .container{max-width:1100px; margin:0 auto; padding:24px; position:relative; z-index:1}
+
+    /* Nav */
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding:10px 0 6px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text);
+      font-weight:700; letter-spacing:.3px;
+    }
+    .logo{
+      width:36px; height:36px; border-radius:10px;
+      background: conic-gradient(from 210deg, var(--brand), var(--brand-2), var(--brand));
+      filter: saturate(1.2);
+      box-shadow: 0 6px 18px rgba(124,92,255,.35);
+    }
+    .nav-links{display:flex; gap:14px; align-items:center}
+    .nav a{color:var(--text); text-decoration:none; opacity:.85}
+    .nav a:hover{opacity:1}
+
+    .btn{
+      display:inline-block; border:1px solid var(--border); color:var(--text);
+      padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:600;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06));
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow:0 8px 22px rgba(0,0,0,.25)}
+    .btn-primary{
+      background:linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-color:transparent; color:#0a0c14;
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
+    }
+
+    /* Hero */
+    .hero{
+      margin-top:30px;
+      display:grid; grid-template-columns: 1.2fr 1fr; gap:26px; align-items:center;
+    }
+    .card{
+      background: var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero .left{padding:32px 28px}
+    .eyebrow{
+      display:inline-flex; gap:8px; align-items:center;
+      font-size:12px; letter-spacing:.4px; text-transform:uppercase; color:var(--muted);
+      background: rgba(124,92,255,.14); border:1px solid rgba(124,92,255,.35);
+      padding:6px 10px; border-radius:999px;
+    }
+    h1{margin:14px 0 10px; font-size:clamp(28px, 4.2vw, 46px); line-height:1.1}
+    .lead{color:var(--muted); font-size:clamp(15px, 1.4vw, 18px); margin:0 0 18px}
+    .cta{display:flex; gap:12px; flex-wrap:wrap}
+
+    .hero .right{
+      padding:0; overflow:hidden; position:relative; min-height:320px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .gloss{
+      position:absolute; inset:0;
+      background: radial-gradient(600px 300px at 20% 0%, rgba(255,255,255,.25), transparent 60%);
+      pointer-events:none;
+    }
+    .mock{
+      width:min(520px, 92%); aspect-ratio: 16/10; border-radius:16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.25)),
+        radial-gradient(120% 90% at 0% 0%, rgba(124,92,255,.35), transparent 50%),
+        radial-gradient(100% 80% at 100% 100%, rgba(15,240,179,.25), transparent 50%),
+        var(--bg-soft);
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+      display:grid; place-items:center; color:var(--muted); text-align:center; padding:18px;
+    }
+    .mock h3{margin:0 0 6px; color:var(--text)}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
+    .chip{
+      padding:6px 10px; border-radius:999px; border:1px solid var(--border);
+      background: rgba(255,255,255,.04); font-size:13px; color:var(--text); opacity:.9
+    }
+
+    /* Features */
+    .section{margin:44px 0}
+    .section h2{font-size:clamp(22px, 3vw, 32px); margin:0 0 12px}
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    .feature{padding:18px}
+    .feature h3{margin:6px 0 4px; font-size:18px}
+    .feature p{margin:0; color:var(--muted)}
+
+    /* Footer */
+    footer{
+      margin:40px 0 10px; padding:18px; color:var(--muted); font-size:14px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap
+    }
+    footer a{color:inherit; text-decoration:none}
+    .small{font-size:12px; opacity:.85}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr; gap:16px}
+      .hero .right{min-height:260px}
+      .grid{grid-template-columns: 1fr}
+    }
+  </style>
 </head>
 <body>
-  <h1>Hej Kenneth 👋</h1>
-  <p>Din hemsida är nu live via GitHub Pages!</p>
+  <div class="container">
+
+    <!-- NAV -->
+    <nav class="nav">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true"></span>
+        Kenai Tech
+      </a>
+      <div class="nav-links">
+        <a href="#features">Funktioner</a>
+        <a href="#kontakt">Kontakt</a>
+        <a class="btn" href="https://github.com/kennone89-a11y/keno" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="left card">
+        <span class="eyebrow">AI • Röst • Text</span>
+        <h1>Byggt för att prata & skriva – <br/>keno blir din AI-studio</h1>
+        <p class="lead">
+          Kenai Tech samlar röst-till-text, text-till-röst och smarta AI-sammanfattningar.
+          Perfekt för film/serie-recensioner, ljudböcker och poddar.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#features">Utforska funktioner</a>
+          <a class="btn" href="#kontakt">Kontakta mig</a>
+        </div>
+      </div>
+
+      <div class="right card">
+        <div class="gloss" aria-hidden="true"></div>
+        <div class="mock">
+          <div>
+            <h3>Kommer snart ✨</h3>
+            <p class="small">Prototyper: diktera till AI, få svar uppläst, och autosammanfattning.</p>
+            <div class="chips" style="margin-top:10px">
+              <span class="chip">Whisper STT</span>
+              <span class="chip">TTS-röster</span>
+              <span class="chip">Sammanfattning</span>
+              <span class="chip">Snabb delning</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <h2>Funktioner på väg</h2>
+      <div class="grid">
+        <article class="feature card">
+          <h3>🎙️ Röst → Text</h3>
+          <p>Diktera och få exakt transkribering. Perfekt för anteckningar och recensioner.</p>
+        </article>
+        <article class="feature card">
+          <h3>🗣️ Text → Röst</h3>
+          <p>Låt AI läsa upp svar i naturliga röster. Handsfree-konversationer överallt.</p>
+        </article>
+        <article class="feature card">
+          <h3>🎬 Snabbrecensioner</h3>
+          <p>Klistra in en titel eller synopsis – få kortfattad sammanfattning och betygsförslag.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="kontakt" class="section card" style="padding:22px">
+      <h2>Hör av dig</h2>
+      <p class="lead">Idéer? Förslag? Samarbeten? Släng iväg ett DM eller öppna ett issue på GitHub.</p>
+      <div class="cta" style="margin-top:8px">
+        <a class="btn" href="mailto:hello@kenai.tech">📧 hello@kenai.tech</a>
+        <a class="btn" href="https://github.com/kennone89-a11y/keno/issues" target="_blank" rel="noopener">🧩 Öppna Issue</a>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year"></span> Kenai Tech</span>
+      <span class="small">Byggt med GitHub Pages</span>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
