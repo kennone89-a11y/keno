@@ -37,7 +37,7 @@
     .nav a{color:var(--text); text-decoration:none; opacity:.85}
     .nav a:hover{opacity:1}
 
-    .btn{display:inline-block; border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:600; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)); transition:.08s transform,.2s box-shadow,.2s border-color}
+    .btn{display:inline-block; border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:600; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)); transition:.08s transform,.2s box-shadow,.2s border-color; cursor:pointer}
     .btn:hover{transform:translateY(-1px); box-shadow:0 8px 22px rgba(0,0,0,.25)}
     .btn-primary{background:linear-gradient(135deg, var(--brand), var(--brand-2)); border-color:transparent; color:#0a0c14; text-shadow:0 1px 0 rgba(255,255,255,.35)}
 
@@ -82,6 +82,15 @@
     .dot{width:10px; height:10px; border-radius:999px; background:#f44; box-shadow:0 0 0 0 rgba(244,68,68,.7); animation:pulse 1.2s infinite ease-in-out; display:none}
     @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,68,68,.7)}70%{box-shadow:0 0 0 10px rgba(244,68,68,0)}100%{box-shadow:0 0 0 0 rgba(244,68,68,0)}}
 
+    /* AI demo */
+    .demo{padding:26px}
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    textarea{
+      width:100%; min-height:120px; resize:vertical; border-radius:12px; padding:12px;
+      background:rgba(255,255,255,.06); color:var(--text); border:1px solid var(--border); outline:none;
+    }
+    .output{white-space:pre-wrap; background:rgba(0,0,0,.25); padding:14px; border-radius:12px; border:1px solid var(--border); min-height:80px}
+
     /* Footer & responsive */
     footer{margin:40px 0 10px; padding:18px; color:var(--muted); font-size:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
     footer a{color:inherit; text-decoration:none}
@@ -97,6 +106,7 @@
       <a class="brand" href="/"><span class="logo" aria-hidden="true"></span>Kenai Tech</a>
       <div class="nav-links">
         <a href="#features">Funktioner</a>
+        <a href="#demo">AI-demo</a>
         <a href="#kontakt">Kontakt</a>
         <a class="btn" href="https://github.com/kennone89-a11y/keno" target="_blank" rel="noopener">GitHub</a>
       </div>
@@ -137,10 +147,24 @@
       </div>
     </section>
 
+    <!-- AI DEMO -->
+    <section id="demo" class="section card demo">
+      <h2>AI-recensions-demo</h2>
+      <p class="lead">Klistra in titel/synopsis eller skriv vad filmen/serien handlar om. Klicka “Sammanfatta”. (Detta är en lokal demo utan backend.)</p>
+      <div class="row">
+        <textarea id="demoInput" placeholder="Ex: 'Breaking Bad handlar om en kemilärare som...'></textarea>
+      </div>
+      <div class="cta" style="margin-top:10px">
+        <button class="btn btn-primary" id="summarizeBtn">AI-demo: Sammanfatta</button>
+        <button class="btn" id="clearBtn">Rensa</button>
+      </div>
+      <div class="output" id="demoOut" style="margin-top:12px"></div>
+    </section>
+
     <!-- COMING SOON -->
     <section id="coming" class="section card soon" aria-labelledby="soon-title">
       <h2 id="soon-title">Kommer snart – vill du få ping?</h2>
-      <p class="lead">Lägg din e-post så hör jag av mig när nya funktioner släpps. Testa också röstknappen nedan (demoläge).</p>
+      <p class="lead">Lämna din e-post så hör jag av mig när nya funktioner släpps. Testa också röstknappen (demoläge, sparar inget).</p>
       <div class="row" style="margin-top:8px">
         <input id="email" class="input" type="email" placeholder="din@epost.se" aria-label="Din e-post">
         <button class="btn btn-primary" id="notifyBtn" type="button">Skicka intresse</button>
@@ -149,7 +173,7 @@
           <span class="dot" id="recDot" aria-hidden="true"></span>
         </span>
       </div>
-      <p class="note">E-postknappen öppnar din mejlklient (mailto). Röstknappen kör bara en lokal demo och sparar inget.</p>
+      <p class="note">E-postknappen öppnar din mejlklient (mailto). Röstknappen kör en lokal demo.</p>
     </section>
 
     <!-- CONTACT -->
@@ -171,7 +195,7 @@
     // copyright-år
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // "Skicka intresse" -> öppna mail med förifylld body
+    // Subscribe via mailto
     document.getElementById('notifyBtn').addEventListener('click', () => {
       const email = document.getElementById('email').value.trim();
       const to = 'hello@kenai.tech';
@@ -180,7 +204,7 @@
       window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
     });
 
-    // Enkel röst-demo: begär mikrofon, visa röd indikator medan knappen hålls
+    // Mic demo
     const voiceBtn = document.getElementById('voiceBtn');
     const recDot = document.getElementById('recDot');
     let stream;
@@ -188,19 +212,55 @@
       try {
         stream = stream || await navigator.mediaDevices.getUserMedia({ audio: true });
         return true;
-      } catch (e) {
+      } catch {
         alert('Kunde inte få mikrofonåtkomst. Tillåt mic och testa igen.');
         return false;
       }
     };
-    voiceBtn.addEventListener('mousedown', async () => {
-      if (await askMic()) recDot.style.display = 'inline-block';
+    const showDot = (on) => { recDot.style.display = on ? 'inline-block' : 'none'; };
+    voiceBtn.addEventListener('mousedown', async () => { if (await askMic()) showDot(true); });
+    voiceBtn.addEventListener('mouseup',   () => showDot(false));
+    voiceBtn.addEventListener('mouseleave',() => showDot(false));
+    voiceBtn.addEventListener('touchstart',async e => { e.preventDefault(); if (await askMic()) showDot(true); }, {passive:false});
+    voiceBtn.addEventListener('touchend',  () => showDot(false));
+
+    // AI-demo (lokal, ingen backend): enkel sammanfattning + betyg
+    const out = document.getElementById('demoOut');
+    const input = document.getElementById('demoInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const btn = document.getElementById('summarizeBtn');
+
+    function pseudoScore(str){
+      let h = 0; for (let i=0;i<str.length;i++) h = (h*31 + str.charCodeAt(i)) >>> 0;
+      return 5 + (h % 6); // 5–10
+    }
+    function makeSummary(txt){
+      const t = txt.trim();
+      if (!t) return "Skriv något om titel/handling först.";
+      const score = pseudoScore(t);
+      const lines = [
+        "Kort sammanfattning:",
+        "• Berättelsen kretsar kring huvudkaraktärens val och konsekvenser.",
+        "• Tonen är genomgående " + (t.length % 2 ? "mörk" : "hoppfull") + " med fokus på relationer.",
+        "• Tempot växlar mellan intensiva scener och lugnare dialogdrivna partier.",
+        "",
+        "Betyg (demo): " + score + "/10",
+        "Rekommendation: " + (score >= 8 ? "Se direkt." : score >= 7 ? "Värd en chans." : "För fans av genren.")
+      ];
+      return lines.join("\n");
+    }
+    async function typeOut(text){
+      out.textContent = "";
+      for (let i=0;i<text.length;i++){
+        out.textContent += text[i];
+        await new Promise(r => setTimeout(r, 8)); // liten skrivanimation
+      }
+    }
+    btn.addEventListener('click', async () => {
+      const summary = makeSummary(input.value);
+      await typeOut(summary);
     });
-    voiceBtn.addEventListener('mouseup', () => { recDot.style.display = 'none'; });
-    voiceBtn.addEventListener('mouseleave', () => { recDot.style.display = 'none'; });
-    // Touch-stöd
-    voiceBtn.addEventListener('touchstart', async (e) => { e.preventDefault(); if (await askMic()) recDot.style.display = 'inline-block'; }, {passive:false});
-    voiceBtn.addEventListener('touchend', () => { recDot.style.display = 'none'; });
+    clearBtn.addEventListener('click', () => { input.value = ""; out.textContent = ""; });
   </script>
 </body>
 </html>
