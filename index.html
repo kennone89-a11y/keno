@@ -2,251 +2,84 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kenai Tech</title>
-  <meta name="description" content="Kenai Tech – AI för röst, text och recensioner." />
+  <meta name="description" content="Kenai Tech – AI för röst, text och recensioner" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta property="og:title" content="Kenai Tech" />
-  <meta property="og:description" content="AI för röst, text och recensioner – byggt av Kenai Tech." />
+  <meta property="og:description" content="AI för röst, text och recensioner – byggd av Kenai" />
   <meta property="og:image" content="https://kenai.technology/favicon.svg" />
   <meta name="theme-color" content="#7c5cff" />
 
+  <!-- Hero Text Animation & Glow -->
   <style>
-    :root{
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #hero h1 {
+      animation: fadeIn 2s ease-out forwards;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.7),
+                   0 0 40px rgba(124, 252, 255, 0.5);
+    }
+
+    /* Hero section styling */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background-image: url('A_digital_illustration_in_the_style_of_an_epic_mov.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Grundfärger för sidan */
+    :root {
       --bg: #0b0f19;
-      --bg-soft:#111728;
-      --text:#e9eef5;
-      --muted:#9fb0c6;
-      --brand:#7c5cff;
-      --brand2:#0ff0b3;
-      --card:rgba(255,255,255,.06);
-      --border:rgba(255,255,255,.10);
-      --radius:16px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --max:1080px;
+      --bg-soft: #111728;
+      --text: #9eef5;
+      --muted: #9fb6b6;
+      --brand: #7c5cff;
+      --brand2: #0ffb3;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.1);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --max: 1080px;
     }
-    @media (prefers-color-scheme: light){
-      :root{
-        --bg:#f7f8fc; --bg-soft:#ffffff; --text:#101418; --muted:#5b6a80;
-        --card:#fff; --border:rgba(10,10,20,.08); --shadow:0 10px 30px rgba(10,10,20,.08);
-      }
-      body::before{opacity:.35}
+
+    body {
+      background-color: var(--bg);
+      color: white;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text); background:
-        radial-gradient(900px 600px at 10% -10%, rgba(124,92,255,.25), transparent 60%),
-        radial-gradient(700px 500px at 100% 0%, rgba(15,240,179,.18), transparent 55%),
-        var(--bg);
-      line-height:1.6;
-    }
-    body::before{
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.2;
-      background:linear-gradient(transparent 26px, rgba(255,255,255,.06) 27px, transparent 28px) 0 0/100% 28px;
-    }
-    .wrap{max-width:var(--max); margin:0 auto; padding:24px; position:relative; z-index:1}
-
-    /* NAV */
-    .nav{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); font-weight:800}
-    .brand-badge{width:34px; height:34px; border-radius:10px;
-      background:conic-gradient(from 210deg, var(--brand), var(--brand2), var(--brand));
-      box-shadow:0 6px 18px rgba(124,92,255,.35)}
-    .links{display:flex; gap:14px; align-items:center}
-    .links a{color:var(--text); text-decoration:none; opacity:.85}
-    .links a:hover{opacity:1}
-    .btn{display:inline-block; padding:10px 14px; border-radius:12px; border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.06)); color:var(--text); font-weight:600; text-decoration:none}
-    .btn-primary{border-color:transparent; background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#091015}
-
-    /* HERO */
-    .hero{margin-top:26px; display:grid; grid-template-columns:1.15fr .85fr; gap:28px; align-items:center}
-    .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow)}
-    .hero .left{padding:30px}
-    .eyebrow{display:inline-flex; gap:8px; align-items:center; font-size:12px; letter-spacing:.45px; text-transform:uppercase; color:var(--muted); background:rgba(124,92,255,.14); border:1px solid rgba(124,92,255,.4); border-radius:999px; padding:6px 10px}
-    h1{font-size:clamp(28px,4.5vw,48px); line-height:1.1; margin:12px 0}
-    .lead{color:var(--muted); margin:0 0 18px}
-    .cta{display:flex; gap:10px; flex-wrap:wrap}
-
-    .hero .right{padding:0; overflow:hidden; min-height:300px; display:flex; align-items:center; justify-content:center}
-    .mock{width:min(520px,92%); aspect-ratio:16/10; border-radius:14px; border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.18)),
-                 radial-gradient(120% 90% at 0% 0%, rgba(124,92,255,.35), transparent 50%),
-                 radial-gradient(100% 80% at 100% 100%, rgba(15,240,179,.25), transparent 50%),
-                 var(--bg-soft);
-      display:grid; place-items:center; color:var(--muted); text-align:center; padding:18px}
-
-    /* FEATURES */
-    .section{margin:46px 0}
-    .section h2{font-size:clamp(22px,3.3vw,32px); margin:0 0 12px}
-    .grid{display:grid; gap:14px; grid-template-columns:repeat(3, minmax(0,1fr))}
-    .feature{padding:18px}
-    .feature h3{margin:6px 0 6px; font-size:18px}
-    .feature p{margin:0; color:var(--muted)}
-
-    /* DEMO */
-    .demo{padding:24px}
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    textarea{
-      width:100%; min-height:120px; resize:vertical; border-radius:12px; padding:12px;
-      background:rgba(255,255,255,.06); color:var(--text); border:1px solid var(--border); outline:none
-    }
-    .output{white-space:pre-wrap; background:rgba(0,0,0,.25); padding:14px; border-radius:12px; border:1px solid var(--border); min-height:80px}
-
-    /* COMING */
-    .soon{padding:24px}
-    .input{flex:1 1 260px; min-width:240px; height:44px; padding:0 12px; border-radius:12px; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text); outline:none}
-    .note{color:var(--muted); font-size:13px; margin-top:8px}
-    .mic{display:inline-flex; align-items:center; gap:8px}
-    .dot{width:10px;height:10px;border-radius:999px;background:#f44;box-shadow:0 0 0 0 rgba(244,68,68,.7);animation:pulse 1.2s infinite ease-in-out; display:none}
-    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,68,68,.7)}70%{box-shadow:0 0 0 10px rgba(244,68,68,0)}100%{box-shadow:0 0 0 0 rgba(244,68,68,0)}}
-
-    /* FOOTER & RESP */
-    footer{margin:40px 0 10px; padding:18px; color:var(--muted); font-size:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
-    .small{font-size:12px; opacity:.85}
-    @media (max-width:980px){.hero{grid-template-columns:1fr} .grid{grid-template-columns:1fr}}
   </style>
 </head>
+
 <body>
-  <div class="wrap">
 
-    <!-- NAV -->
-    <nav class="nav">
-      <a class="brand" href="/">
-        <span class="brand-badge" aria-hidden="true"></span> Kenai Tech
-      </a>
-      <div class="links">
-        <a href="#features">Funktioner</a>
-        <a href="#demo">AI-demo</a>
-        <a href="#kontakt">Kontakt</a>
-        <a class="btn" href="https://github.com/kennone89-a11y/keno" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </nav>
+  <!-- HERO SECTION -->
+  <section id="hero">
+    <h1>
+      KENAI LEGENDS<br>
+      <span style="font-size:1.5rem;">BORN TO PADDLE</span>
+    </h1>
+  </section>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="left card">
-        <span class="eyebrow">AI • RÖST • TEXT</span>
-        <h1>Byggt för att prata & skriva –<br/>Kenai blir din AI-studio</h1>
-        <p class="lead">Kenai Tech samlar röst-till-text, text-till-röst och smarta sammanfattningar. Perfekt för film/serie-recensioner, ljudböcker och poddar.</p>
-        <div class="cta">
-          <a class="btn btn-primary" href="#features">Utforska funktioner</a>
-          <a class="btn" href="#coming">Kommer snart</a>
-        </div>
-      </div>
-      <div class="right card">
-        <div class="mock">
-          <div>
-            <h3 style="margin:0 0 6px;color:var(--text)">Prototyper på väg ✨</h3>
-            <p class="small" style="margin:0;color:var(--muted)">Diktera till AI, få svar uppläst och autosammanfattning.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features" class="section">
-      <h2>Funktioner på väg</h2>
-      <div class="grid">
-        <article class="feature card"><h3>🎙️ Röst → Text</h3><p>Diktera och få exakt transkribering.</p></article>
-        <article class="feature card"><h3>🗣️ Text → Röst</h3><p>Låt AI läsa upp svar i naturliga röster.</p></article>
-        <article class="feature card"><h3>🎬 Snabbrecensioner</h3><p>Skriv en titel – få kort sammanfattning och betygsförslag.</p></article>
-      </div>
-    </section>
-
-    <!-- AI DEMO -->
-    <section id="demo" class="section card demo">
-      <h2>AI-recensions-demo</h2>
-      <p class="lead">Klistra in titel/synopsis eller skriv vad filmen/serien handlar om. Klicka “Sammanfatta”.</p>
-      <textarea id="demoInput" placeholder="Ex: 'Breaking Bad handlar om en kemilärare som...'"></textarea>
-      <div class="cta" style="margin-top:10px">
-        <button class="btn btn-primary" id="summarizeBtn" type="button">AI-demo: Sammanfatta</button>
-        <button class="btn" id="clearBtn" type="button">Rensa</button>
-      </div>
-      <div class="output" id="demoOut" style="margin-top:12px"></div>
-    </section>
-
-    <!-- COMING SOON -->
-    <section id="coming" class="section card soon" aria-labelledby="soon-title">
-      <h2 id="soon-title">Kommer snart – vill du få ping?</h2>
-      <div class="row" style="margin-top:6px">
-        <input id="email" class="input" type="email" placeholder="din@epost.se" aria-label="Din e-post" />
-        <button class="btn btn-primary" id="notifyBtn" type="button">Skicka intresse</button>
-        <span class="mic">
-          <button class="btn" id="voiceBtn" type="button">🎙️ Håll för att prata</button>
-          <span class="dot" id="recDot" aria-hidden="true"></span>
-        </span>
-      </div>
-      <p class="note">E-postknappen öppnar din mejlklient (mailto). Röstknappen kör en lokal demo och sparar inget.</p>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="kontakt" class="section card" style="padding:24px">
-      <h2>Hör av dig</h2>
-      <div class="cta" style="margin-top:8px">
-        <a class="btn" href="mailto:hello@kenai.tech">📧 hello@kenai.tech</a>
-        <a class="btn" href="https://github.com/kennone89-a11y/keno/issues" target="_blank" rel="noopener">🧩 Öppna Issue</a>
-      </div>
-    </section>
-
-    <footer>
-      <span>© <span id="year"></span> Kenai Tech</span>
-      <span class="small">Byggt med GitHub Pages</span>
-    </footer>
-  </div>
-
+  <!-- Här kan resten av din kod fortsätta -->
   <script>
-    // copyright-år
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Subscribe via mailto
-    document.getElementById('notifyBtn').addEventListener('click', () => {
-      const email = document.getElementById('email').value.trim();
-      const to = 'hello@kenai.tech';
-      const subject = encodeURIComponent('Notify me about Kenai Tech');
-      const body = encodeURIComponent(`Hej!\n\nJag vill få ping när ni släpper nya funktioner.\n\nMin e-post: ${email || '(ej ifylld)'}\n\n/`);
-      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-    });
-
-    // Mic demo
-    const voiceBtn = document.getElementById('voiceBtn');
-    const recDot = document.getElementById('recDot');
-    let stream;
-    const askMic = async () => {
-      try { stream = stream || await navigator.mediaDevices.getUserMedia({ audio:true }); return true; }
-      catch { alert('Tillåt mikrofon och testa igen.'); return false; }
-    };
-    const showDot = (on) => recDot.style.display = on ? 'inline-block' : 'none';
-    voiceBtn.addEventListener('mousedown', async ()=>{ if(await askMic()) showDot(true); });
-    voiceBtn.addEventListener('mouseup',   ()=>showDot(false));
-    voiceBtn.addEventListener('mouseleave',()=>showDot(false));
-    voiceBtn.addEventListener('touchstart',async e=>{ e.preventDefault(); if(await askMic()) showDot(true); }, {passive:false});
-    voiceBtn.addEventListener('touchend',  ()=>showDot(false));
-
-    // AI-demo (lokal): pseudo-summering + betyg
-    const out = document.getElementById('demoOut');
-    const input = document.getElementById('demoInput');
-    document.getElementById('clearBtn').addEventListener('click', ()=>{ input.value=""; out.textContent=""; });
-    document.getElementById('summarizeBtn').addEventListener('click', async ()=>{
-      const t = (input.value || '').trim();
-      if(!t){ out.textContent = "Skriv något först 🙏"; return; }
-      const score = 5 + (Array.from(t).reduce((a,c)=>a+c.charCodeAt(0),0) % 6); // 5–10
-      const lines = [
-        "Kort sammanfattning:",
-        "• Berättelsen kretsar kring val, konsekvenser och relationer.",
-        `• Tonen är ${(t.length%2?'mörk':'hoppfull')} och tempot växlar mellan intensitet och dialog.`,
-        "",
-        `Betyg (demo): ${score}/10`,
-        (score>=8?"Rekommendation: Se direkt.":score>=7?"Rekommendation: Värd en chans.":"Rekommendation: För fans av genren.")
-      ].join("\n");
-      out.textContent = "";
-      for (let i=0;i<lines.length;i++){
-        out.textContent += lines[i];
-        await new Promise(r=>setTimeout(r,8));
-      }
-    });
+    // Din befintliga JavaScript-kod kan stå kvar här om du har någon
   </script>
+
 </body>
 </html>
